@@ -10,6 +10,7 @@ def task():
     while True:
         sleep(0.61)
         print("*", end="")
+        
 
 
 import threading
