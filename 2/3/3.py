@@ -1,5 +1,5 @@
 import threading
-from typing import Callable
+from typing import Callable, Any
 
 # Создайте класс SimpleThread
 class SimpleThread(threading.Thread):
