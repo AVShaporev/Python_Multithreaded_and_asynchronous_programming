@@ -19,9 +19,59 @@ import queue
 import threading
 
 # создайте две очереди
+main_queue = queue.PriorityQueue(maxsize=30)
+sup_queue = queue.Queue()
+
 # напишите функцию производителя
+def producer():
+    for item in get_next_declar():
+        if item is None:
+            break
+        else:
+            if not main_queue.full():
+                main_queue.put(CCD(item))
+            else:
+                sup_queue.put(CCD(item))
+
 # напишите функцию потребителя
+def consumer():
+    while True:
+        i = main_queue.get()
+
+        while not handler(i):
+            pass
+        
+        main_queue.task_done()
+
 # создайте и запустите поток - производитель, дождитесь его завершения
+prod_0 = threading.Thread(target=producer, name='prod_0')
+prod_0.start()
 # создайте и запустите потоки - инспекторы
+insp_1 = threading.Thread(target=consumer, name='insp_1', daemon=True)
+insp_2 = threading.Thread(target=consumer, name='insp_2', daemon=True)
+insp_3 = threading.Thread(target=consumer, name='insp_3', daemon=True)
+
 # после завершения обработки всех деклараций из очереди,
+prod_0.join()
+insp_1.start()
+insp_2.start()
+insp_3.start()
+
+# insp_1.join()
+# insp_2.join()
+# insp_3.join()
+main_queue.join()
+
+
 # переместите в главную очередь все декларации из вспомог. очереди.
+# while True:
+#     if not main_queue.full():
+#         main_queue.put(sup_queue.get())
+#     else:
+#         break
+
+# for item in sup_queue.get():
+#     main_queue.put(item)
+
+while not sup_queue.empty():
+     main_queue.put(sup_queue.get())

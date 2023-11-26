@@ -79,7 +79,6 @@ my_flag = True
 
 def producer():
     for i in get_obj:
-        print(i)
         if i is None:
             break
         else:
